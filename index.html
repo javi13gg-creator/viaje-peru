@@ -96,8 +96,7 @@ function sh(k,v){const s=store("hp");s[k]=v;store("hp",s)}
 function docsHTML(){const hp=store("hp"),L=(a)=>a.map(x=>`<li>${ln(x[0],x[1])}</li>`).join("");
 return`<div class="card"><h2>🚌 Transporte</h2><ul class="l">${L([U.td,U.bd,U.bal,U.bpi,U.bia,U.bpc,U.prv,U.bmp])}</ul><div class="mu">Los enlaces de Drive solo abren si tu cuenta de Google tiene acceso a esos archivos.</div></div>
 <div class="card"><h2>🎟️ Tours y entradas</h2><ul class="l">${L([U.tod,U.bal2,U.bug,U.sil,U.fta,U.col,U.tit,U.cc,U.vs,U.mc,U.hum])}</ul></div>
-<div class="card"><h2>🏨 Alojamientos</h2>${AL.map((a,i)=>`<div style="padding:8px 0;border-bottom:1px solid var(--bd)"><b>${a[0]}</b><div class="mu">${a[1]} · ${a[2]} · ${a[3]}</div><div>${ln("Reserva (Booking)",BK(a[4]))} · ${ln("📍 Mapa","https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a[0]+" "+a[1]+" Perú"))}</div><input type="search" placeholder="Teléfono / dirección (solo en este dispositivo)" value="${E(hp[a[0]]||"")}" oninput="sh('${a[0].replace(/'/g,"\\'")}',this.value)" style="margin:6px 0 0"></div>`).join("")}</div>
-<div class="card"><h2>🗺️ Mapa de visitas</h2>${ln("Abrir mapa en Google Maps","https://maps.app.goo.gl/wDtNnq39EhCXSpwUA")}</div>`}
+<div class="card"><h2>🏨 Alojamientos</h2>${AL.map((a,i)=>`<div style="padding:8px 0;border-bottom:1px solid var(--bd)"><b>${a[0]}</b><div class="mu">${a[1]} · ${a[2]} · ${a[3]}</div><div>${ln("Reserva (Booking)",BK(a[4]))} · ${ln("📍 Mapa","https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a[0]+" "+a[1]+" Perú"))}</div><input type="search" placeholder="Teléfono / dirección (solo en este dispositivo)" value="${E(hp[a[0]]||"")}" oninput="sh('${a[0].replace(/'/g,"\\'")}',this.value)" style="margin:6px 0 0"></div>`).join("")}</div>`}
 function gastosHTML(){const g=G(),n=g.p.length;let h=`<div class="card"><h2>👥 Grupo</h2><p class="mu">Nombres separados por comas. Los gastos se guardan solo en este dispositivo: lo normal es que los apunte una persona.</p><input type="search" id="pp" value="${E(g.p.join(", "))}" placeholder="Javi, Leti, Jorge…"><button class="chip on" onclick="setP()">Guardar grupo</button></div>`;
 if(!n)return h;
 h+=`<div class="card"><h2>➕ Nuevo gasto</h2><input type="search" id="gc" placeholder="Concepto (cena, taxi…)"><input type="search" id="gm" inputmode="decimal" placeholder="Importe en €"><select id="gw" style="width:100%;padding:10px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;margin-bottom:8px">${g.p.map(x=>`<option>${E(x)}</option>`).join("")}</select><button class="chip on" onclick="addG()">Añadir (se reparte entre todos)</button></div>`;
@@ -105,7 +104,22 @@ const tot=g.i.reduce((a,x)=>a+x.m,0),b={};g.p.forEach(x=>b[x]=-tot/n);g.i.forEac
 h+=`<div class="card"><h2>🧾 Gastos · ${tot.toFixed(2)} €</h2>${g.i.length?`<table>${g.i.map((x,k)=>`<tr><td>${E(x.c)}<div class="mu">Pagó ${E(x.w)}</div></td><td>${x.m.toFixed(2)} € <span class="go" onclick="delG(${k})">✕</span></td></tr>`).join("")}</table>`:`<div class="mu">Aún no hay gastos.</div>`}</div>`;
 if(g.i.length){const r=settle(b);h+=`<div class="card"><h2>🤝 Cuentas</h2><div class="mu">Cada uno: ${(tot/n).toFixed(2)} €</div><ul class="l">${r.length?r.map(x=>`<li>${E(x)}</li>`).join(""):"<li>Todo saldado ✅</li>"}</ul></div>`}
 return h}
-const T=[["dia","📅 Por día"],["ciudad","📍 Por ciudad"],["docs","📎 Reservas"],["gastos","💸 Gastos"],["ppto","💶 Presupuesto"],["tips","✍️ Consejos"],["maleta","🎒 Maleta"]];
+const MAPA="https://maps.app.goo.gl/wDtNnq39EhCXSpwUA";
+const PL={1:["Parque Combate de Abtao Lima","Hospedaje La Anita Lima"],2:["Reserva Nacional de Paracas","El Chaco Paracas","Playa Roja Paracas","La Catedral Paracas"],3:["Islas Ballestas","Huacachina","Ica Perú"],4:["Plaza de Armas Arequipa","Monasterio de Santa Catalina","Mirador de Yanahuara","Mercado San Camilo Arequipa","Chicha restaurante Arequipa"],5:["Cantera de Añashuayco Arequipa","Quebrada de Culebrillas Arequipa"],6:["Mirador Patapampa","Chivay","Baños termales La Calera Chivay"],7:["Cruz del Cóndor","Maca Colca","Yanque Colca","Puno Perú"],8:["Islas Uros Puno","Isla Taquile","Plaza de Armas Puno"],9:["Plaza de Armas Cusco","Piedra de los doce ángulos Cusco","Barrio San Blas Cusco"],10:["Qorikancha","Sacsayhuamán","Qenqo","Puka Pukara","Tambomachay","Cristo Blanco Cusco"],11:["Pisac","Urubamba","Ollantaytambo","Aguas Calientes Perú"],12:["Machu Picchu","Wayna Picchu","Aguas Calientes Perú"],13:["Montaña de Colores Vinicunca","Mercado San Pedro Cusco"],14:["Laguna Humantay"],15:["Aeropuerto de Cusco","Parque Kennedy Miraflores","Parque del Amor Miraflores","Larcomar","Puente de los Suspiros Barranco","Isolina Taverna Peruana Lima"],16:["Plaza de Armas Lima","Catedral de Lima","Casa de Aliaga Lima","Aeropuerto Jorge Chávez Lima"]};
+let md=0,mp=0;
+function mapaHTML(){const d=D[md],ci=C[d[2]],ps=PL[d[0]]||[],qs=[ci[0].split(" / ")[0]+" Perú",...ps],q=qs[mp]||qs[0],qq=q.includes("Perú")?q:q+" Perú";
+return`<div class="card"><h2>🗺️ Mapa de visitas</h2><p class="mu">Elige el día y toca un sitio para verlo en el mapa.</p>
+<a class="chip on" style="display:inline-block;text-decoration:none" href="${MAPA}" target="_blank" rel="noopener">⭐ Abrir nuestro mapa de sitios guardados</a></div>
+<div class="chips">${D.map((x,i)=>`<button class="chip ${i==md?"on":""}" onclick="md=${i};mp=0;render()">${x[0]}<br><small>${x[1].slice(4)}</small></button>`).join("")}</div>
+<div class="card"><h2>Día ${d[0]} · ${E(d[3])}</h2><div class="chips" style="flex-wrap:wrap">${qs.map((x,i)=>`<button class="chip ${i==mp?"on":""}" onclick="mp=${i};render()">${i?E(x.replace(" Perú","")):"📍 "+ci[0].split(" / ")[0]}</button>`).join("")}</div>
+<iframe title="Mapa" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:380px;border:0;border-radius:12px" src="https://www.google.com/maps?q=${encodeURIComponent(qq)}&output=embed"></iframe>
+<div style="margin-top:8px">${ln("Abrir en Google Maps","https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(qq))}</div></div>`}
+const MQ={};
+const mapSrc=q=>"https://www.google.com/maps?q="+encodeURIComponent(q.includes("Perú")?q:q+" Perú")+"&output=embed";
+function mapBox(id,qs){MQ[id]=qs;return`<h3>🗺️ Mapa</h3><div class="chips" style="flex-wrap:wrap">${qs.map((x,i)=>`<button class="chip ${i?"":"on"}" onclick="setMap('${id}',${i},this)">${i?"":"📍 "}${E(x.replace(" Perú",""))}</button>`).join("")}</div><iframe id="mf${id}" title="Mapa" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:300px;border:0;border-radius:12px" src="${mapSrc(qs[0])}"></iframe>`}
+function setMap(id,i,b){document.getElementById("mf"+id).src=mapSrc(MQ[id][i]);b.parentNode.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));b.classList.add("on")}
+const cn=c=>C[c][0].split(" / ")[0];
+const T=[["dia","📅 Por día"],["ciudad","📍 Por ciudad"],["docs","📎 Reservas"],["mapa","🗺️ Mapa"],["gastos","💸 Gastos"],["ppto","💶 Presupuesto"],["tips","✍️ Consejos"],["maleta","🎒 Maleta"]];
 let tab="dia",cur=0,city="lima",q="";
 const $=s=>document.querySelector(s),app=$("#app");
 const E=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
@@ -115,7 +129,7 @@ return`<div class="card"><div class="mu">Día ${n} · ${f} · ${ci[0]}</div><h2>
 <span class="tag">⛰️ ${ci[1]}</span><span class="tag">🌡️ ${ci[2]}</span>${h!=="—"?`<div class="mu" style="margin-top:6px">🛏️ ${E(h)}</div>`:""}
 ${av?`<div class="warn">${E(av)}</div>`:""}
 <h3>🕒 Plan</h3><ul class="tl">${it.map(x=>{const[a,b]=x.split("|");return`<li><b>${a}</b><span>${E(b)}</span></li>`}).join("")}</ul>
-<h3>🎒 Qué llevar</h3><div>${ll.map(x=>`<span class="tag">${E(x)}</span>`).join("")}</div>${links(n)}${notes(n)}</div>`}
+<h3>🎒 Qué llevar</h3><div>${ll.map(x=>`<span class="tag">${E(x)}</span>`).join("")}</div>${mapBox("d"+n,[cn(c),...(PL[n]||[])])}${links(n)}${notes(n)}</div>`}
 function render(){
 $("#nav").innerHTML=T.map(([k,l])=>`<button class="${k==tab?"on":""}" onclick="tab='${k}';render();scrollTo(0,0)">${l}</button>`).join("");
 let h="";
@@ -124,7 +138,7 @@ h=`<input type="search" placeholder="Buscar (Machu Picchu, ceviche, bus…)" val
 if(tab=="ciudad"){
 h=`<div class="chips">${Object.keys(C).map(k=>`<button class="chip ${k==city?"on":""}" onclick="city='${k}';render()">${C[k][0]}</button>`).join("")}</div>`;
 const c=C[city],ds=D.filter(d=>d[2]==city||(city=="mp"&&d[0]==12)||(city=="vs"&&d[0]==11)||(city=="ica"&&d[0]==3)||(city=="aqp"&&[4,5].includes(d[0]))||(city=="cusco"&&[9,10,13,14].includes(d[0])));
-h+=`<div class="card"><h2>${c[0]}</h2><span class="tag">⛰️ ${c[1]}</span><span class="tag">🌡️ ${c[2]}</span><p>${c[3]}</p><h3>🍽️ Qué comer</h3><p>${c[4]}</p><h3>🗓️ Días aquí</h3><ul class="l">${ds.map(d=>`<li><span class="go" onclick="tab='dia';cur=${d[0]-1};q='';render()">Día ${d[0]} · ${d[1]}</span>: ${E(d[3])}</li>`).join("")}</ul><h3>🛏️ Alojamiento</h3><ul class="l">${AL.filter(a=>c[0].includes(a[1])||a[1].includes(c[0].split(" ")[0])||(city=="mp"&&a[1]=="Aguas Calientes")||(city=="vs"&&0)).map(a=>`<li>${a[0]} · ${a[2]} · ${a[3]}</li>`).join("")||"<li>—</li>"}</ul></div>`;
+h+=`<div class="card"><h2>${c[0]}</h2><span class="tag">⛰️ ${c[1]}</span><span class="tag">🌡️ ${c[2]}</span><p>${c[3]}</p><h3>🍽️ Qué comer</h3><p>${c[4]}</p><h3>🗓️ Días aquí</h3><ul class="l">${ds.map(d=>`<li><span class="go" onclick="tab='dia';cur=${d[0]-1};q='';render()">Día ${d[0]} · ${d[1]}</span>: ${E(d[3])}</li>`).join("")}</ul><h3>🛏️ Alojamiento</h3><ul class="l">${AL.filter(a=>c[0].includes(a[1])||a[1].includes(c[0].split(" ")[0])||(city=="mp"&&a[1]=="Aguas Calientes")||(city=="vs"&&0)).map(a=>`<li>${a[0]} · ${a[2]} · ${a[3]}</li>`).join("")||"<li>—</li>"}</ul>${mapBox("c"+city,[cn(city),...new Set(ds.flatMap(d=>PL[d[0]]||[]))])}</div>`;
 app.innerHTML=h;return}
 if(tab=="ppto"){
 h=`<div class="card"><h2>Coste total</h2><table>${BU.map(b=>`<tr><td><b>${b[0]}</b><div class="mu">${b[2]}</div></td><td>${b[1]}</td></tr>`).join("")}</table></div><div class="card"><h2>🛏️ Alojamientos</h2><div class="wrap"><table>${AL.map(a=>`<tr><td>${a[0]}<div class="mu">${a[1]} · ${a[2]}</div></td><td>${a[3]}</td></tr>`).join("")}</table></div></div>`;
@@ -132,6 +146,7 @@ app.innerHTML=h;return}
 if(tab=="tips"){
 h=`<div class="card"><h2>Recomendaciones</h2><ul class="l">${TIPS.map(t=>`<li>${t}</li>`).join("")}</ul></div><div class="card"><h2>🌞 Altura y clima</h2><div class="wrap"><table>${Object.values(C).map(c=>`<tr><td><b>${c[0]}</b><div class="mu">${c[3]}</div></td><td>${c[1]}<br>${c[2]}</td></tr>`).join("")}</table></div></div>`;
 app.innerHTML=h;return}
+if(tab=="mapa"){app.innerHTML=mapaHTML();return}
 if(tab=="docs"){app.innerHTML=docsHTML();return}
 if(tab=="gastos"){app.innerHTML=gastosHTML();return}
 const s=store("pk");
