@@ -23,7 +23,7 @@ h2{margin:0 0 4px;font-size:1.3rem}h3{margin:14px 0 6px;font-size:1rem;color:var
 .tag{display:inline-block;background:var(--ac2);color:var(--ac);border-radius:8px;padding:2px 9px;font-size:.82rem;margin:2px 4px 2px 0}
 .warn{background:var(--ac2);border-left:4px solid var(--ac);padding:8px 12px;border-radius:8px;margin:10px 0}
 input[type=search]{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;margin-bottom:8px}
-table{width:100%;border-collapse:collapse}td{padding:7px 4px;border-bottom:1px solid var(--bd)}td:last-child{text-align:right;font-weight:600}
+a{color:var(--ac)}textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;resize:vertical}table{width:100%;border-collapse:collapse}td{padding:7px 4px;border-bottom:1px solid var(--bd)}td:last-child{text-align:right;font-weight:600}
 .wrap{overflow-x:auto}ul.l{padding-left:20px;margin:4px 0}label{display:block;padding:3px 0}
 .go{color:var(--ac);cursor:pointer;text-decoration:underline}
 .nv{display:flex;justify-content:space-between;margin-top:8px}
@@ -59,11 +59,53 @@ const D=[
 [14,"Vie 23 oct","cusco","Laguna Humantay","Chaquill Chak'a",["04:00|Recogida en el hotel (04:00–04:30), 3 h de viaje","07:00|Desayuno en un pueblo local","08:30|Inicio trekking (3.900 → 4.200 m, ~4 km ida y vuelta). Última parte muy dura","10:30|Laguna Humantay (hasta 11:30)","11:30|Bajada: cuidado con piedras y resbalones","13:30|Comida","14:30|Regreso a Cusco (hasta 17:30)"],["Impermeable","Botas con agarre","Agua","Protector solar"],"Llegamos tras un día muy duro: dosificar fuerzas."],
 [15,"Sáb 24 oct","lima","Cusco → Lima","Apartamento con piscina (Miraflores) · 15,5 €",["08:25|Vuelo Cusco → Lima (llegada 10:05)","12:00|Llegada al hotel","13:00|Comer y paseo por Miraflores y Barranco: Indian Market, Parque Kennedy, Malecón, Parque del Amor, Larcomar al atardecer, Plaza de Barranco, Puente de los Suspiros, miradores al Pacífico","21:30|Cena especial en Isolina (reservado)"],["Documentación","Efectivo"],"Otras opciones de cena: La Mar, Panchita, Maido; más casual: Mercado, El Bodegón."],
 [16,"Dom 25 oct","lima","Centro histórico y vuelta","—",["08:00|Desayuno tranquilo","09:00|Centro Histórico (hasta 13:00): Plaza de Armas, Catedral, Palacio de Gobierno, Palacio Arzobispal, Iglesia del Sagrario, Casa de Aliaga","13:00|Comer","14:00|Salida hacia el aeropuerto ✈️"],["Pasaporte","Equipaje"],""]];
-const AL=[["Hospedaje La Anita","Lima","10–11 oct","22,5 €"],["Residencial Los Frayles","Paracas","11–12 oct","11 €"],["Hostal La Estancia (solo ducha)","Ica","12–13 oct","9 €"],["Bella AQP","Arequipa","13–15 oct","42,25 €"],["Sillustani Inn","Puno","16–17 oct","10,33 €"],["Chaquill Chak'a","Cusco","18–20 y 21–24 oct","38,66 € / 31 €"],["Inti Pacha Palace","Aguas Calientes","20–21 oct","33,83 €"],["Apartamento con piscina","Lima","24–25 oct","15,5 €"]];
+const AL=[["Hospedaje La Anita","Lima","10–11 oct","22,5 €","hospedaje-la-anita"],["Residencial Los Frayles","Paracas","11–12 oct","11 €","muca-house-backpacker"],["Hostal La Estancia (solo ducha)","Ica","12–13 oct","9 €","hostal-la-estancia"],["Bella AQP","Arequipa","13–15 oct","42,25 €","bella-aqp"],["Sillustani Inn","Puno","16–17 oct","10,33 €","sillustani-inn"],["Chaquill Chak'a","Cusco","18–20 y 21–24 oct","38,66 € / 31 €","chaquill-chak-39-a-cusco"],["Inti Pacha Palace","Aguas Calientes","20–21 oct","33,83 €","eco-machu-picchu-pueblo"],["Apartamento con piscina","Lima","24–25 oct","15,5 €","hermoso-apartamento-con-piscina-miraflores-canvas"]];
 const BU=[["Transportes","1.035 €","Vuelos 662,5 · interno 72,5 · trenes MP 173,4 · buses ~127 · bus MP 30,3"],["Alojamientos","214 €","Pendientes de pago"],["Actividades","460 €","Colca 112,5 · Montaña colores 68,5 · Wayna Picchu 54 · Machu Picchu 39,8 …"],["Otros","600 €","Seguro 92,3 · eSIM 37,8 · parking 24,2 · comidas/taxis/compras 450 (estimado)"],["TOTAL","2.309 €","Pagado todo salvo 'Otros'"]];
 const TIPS=["Nada de taxis sin licencia ni buses raros: Uber, inDrive o servicios oficiales.","1 € ≈ 4 soles peruanos.","Preguntar siempre si es picante: casi todo pica mucho.","El agua del grifo no es potable: llevar siempre botella.","Zona horaria GMT-5, sin cambio de hora: 7 h menos que España en verano, 6 en invierno.","Sudadera e incluso abrigo alguna noche. Cusco: días soleados, noches frías.","Enchufe tipo A (americano, 2 clavijas planas).","SIM: tiendas Claro (prepago ~11 € con 20 GB, recargable en farmacias/estancos) o eSIM Roamic 20 GB (~38 €).","Souvenirs: Pisac, San Blas y Mercado San Pedro (Cusco).","Seguro Heymondo con cobertura hasta 5.000 m."];
 const PK={"🛂 Documentación":["Pasaporte","DNI","Revolut y tarjeta de banco","Copias impresas: pasaporte, seguro, billetes, reservas"],"🔋 Tecnología":["Powerbank","Cargador y adaptador","Auriculares","Cable USB extra","Funda impermeable móvil","Tablet"],"👗 Ropa":["Mochila de día","Pantalones cortos y largos","Camisetas y camiseta térmica","Sudadera","Guantes y gorro","Ropa interior y pijama","Impermeable ligero y cortavientos","Gorra y gafas de sol","Zapatillas de trekking y chanclas","Bañador y toalla","Bolsa ropa sucia"],"💅 Neceser":["Cepillo y pasta","Desodorante y colonia","Afeitar","Tapones y antifaz"],"💊 Botiquín":["Ibuprofeno y paracetamol","Fortasec y suero oral","Biodramina","Tiritas Compeed, Betadine, gasas, esparadrapo","Antihistamínico","Repelente","Protector solar y bálsamo labial","Papel higiénico, pañuelos y toallitas"],"🧟 Mochila emergencia":["Linterna","Powerbank y cables","1 L de agua","Botiquín","Mechero y bolsas","Documentación","100–200 PEN","1–2 barritas energéticas"]};
-const T=[["dia","📅 Por día"],["ciudad","📍 Por ciudad"],["ppto","💶 Presupuesto"],["tips","✍️ Consejos"],["maleta","🎒 Maleta"]];
+const DR="https://drive.google.com/open?id=",TREN=DR+"1bftNqEJiwY-MTdG4BRZd37mhcRadG4by",BUSD=DR+"1-bM-PTRcvwUp4J3lfGzXEdV2XTdpgdRR",TOURD=DR+"1mplsbG-_gHrRYvsLfR57Kxuy67TcxXBQ";
+const CDS=(a,b,d)=>`https://viajes.cruzdelsur.com.pe/search/${a}/${b}/2026-10-${d}/p/A1/departures?lang=es-PE`;
+const GYG="https://www.getyourguide.com/es-es/",BK=x=>`https://www.booking.com/hotel/pe/${x}.es.html`;
+const U={
+bal:["Bus Lima → Paracas (Cruz del Sur)",CDS("lima","paracas",11)],bpi:["Bus Paracas → Ica",CDS("paracas","ica",12)],bia:["Bus nocturno Ica → Arequipa",CDS("ica","arequipa",12)],bpc:["Bus nocturno Puno → Cusco",CDS("puno","cusco",17)],
+bd:["📁 Billetes de bus (Drive)",BUSD],td:["📁 Billetes de tren, entradas y guía (Drive)",TREN],tod:["📁 Reservas de tours (Drive)",TOURD],
+bal2:["Islas Ballestas",GYG+"paracas-l32470/paracas-tour-guiado-en-barco-a-las-islas-ballestas-t479944"],bug:["Buggy y sandboard",GYG+"ica-l1608/tour-de-buggy-en-el-desierto-de-huacachina-atardecer-y-sandboarding-trineo-t840908"],
+sil:["Ruta del Sillar","https://www.getyourguide.com/arequipa-l2859/excursion-de-4-horas-ruta-del-sillar-con-senderismo-en-culebrillas-t702186/"],
+fta:["Free tour Arequipa","https://freewalkingtoursperu.com/es/tours-arequipa/free-tour-arequipa-ciudad/"],
+col:["Tour Valle del Colca","https://www.civitatis.com/es/arequipa/tour-2-dias-valle-colca-cruz-condor"],
+tit:["Titicaca: Uros y Taquile","https://www.getyourguide.com/es-mx/puno-l32157/puno-lago-titicaca-con-uros-y-taquile-en-lancha-rapida-t663878/"],
+cc:["Excursión alrededores de Cusco",GYG+"cuzco-l359/cusco-city-tour-con-qorikancha-y-4-sitios-incas-t1237042"],
+vs:["Tour Valle Sagrado",GYG+"cuzco-l359/cuzco-valle-sagrado-pisac-ollantaytambo-minas-de-sal-moray-t783129"],
+mc:["Montaña de Colores",GYG+"cuzco-l359/tour-en-cuatrimoto-al-valle-rojo-y-la-montana-arcoiris-con-comidas-incluidas-t769473/"],
+hum:["Laguna Humantay","https://civitatis.com/es/cusco/excursion-laguna-humantay/"],
+bmp:["Bus subida Machu Picchu","https://www.civitatis.com/es/aguas-calientes/autobus-machu-picchu-aguas-calientes/"],
+prv:["Tren + bus vuelta (PeruRail)","https://book.perurail.com/Reservas/Trenes"]};
+const H=i=>["🛏️ "+AL[i][0],BK(AL[i][4])];
+const LK={1:[H(0)],2:[U.bal,U.bd,H(1)],3:[U.bal2,U.bug,U.bpi,U.bia,U.bd,H(2)],4:[U.fta,H(3)],5:[U.sil],6:[U.col,U.tod],7:[U.col,H(4)],8:[U.tit,U.bpc,U.bd,U.tod],9:[H(5)],10:[U.cc],11:[U.vs,U.tod,H(6)],12:[U.td,U.bmp,U.prv],13:[U.mc,U.tod],14:[U.hum,U.tod],15:[H(7)],16:[]};
+const NG={}; // avisos del grupo por día, ej: {8:"Recogida a las 06:45"}
+const ln=(l,u)=>`<a href="${u}" target="_blank" rel="noopener">${l}</a>`;
+function links(n){const a=LK[n]||[];return a.length?`<h3>📎 Reservas y enlaces</h3><div>${a.map(x=>`<span class="tag">${ln(x[0],x[1])}</span>`).join("")}</div>`:""}
+function notes(n){const s=store("nt");return`${NG[n]?`<div class="warn">📢 ${E(NG[n])}</div>`:""}<h3>📝 Mis notas</h3><textarea rows="3" placeholder="Hora confirmada, teléfono del guía…" oninput="sn(${n},this.value)">${E(s[n]||"")}</textarea><div class="mu">Se guardan solo en este dispositivo.</div>`}
+function sn(n,v){const s=store("nt");s[n]=v;store("nt",s)}
+function G(){const g=store("gx");return{p:g.p||[],i:g.i||[]}}
+function setP(){const g=G();g.p=$("#pp").value.split(",").map(x=>x.trim()).filter(Boolean);store("gx",g);render()}
+function addG(){const g=G(),c=$("#gc").value.trim(),m=parseFloat($("#gm").value.replace(",","."));if(!c||!(m>0))return;g.i.push({c,m,w:$("#gw").value});store("gx",g);render()}
+function delG(k){const g=G();g.i.splice(k,1);store("gx",g);render()}
+function settle(b){const d=[],c=[],r=[];Object.entries(b).forEach(([k,v])=>{if(v<-.005)d.push([k,-v]);else if(v>.005)c.push([k,v])});d.forEach(x=>{while(x[1]>.005&&c.length){const y=c[0],m=Math.min(x[1],y[1]);r.push(`${x[0]} → ${y[0]}: ${m.toFixed(2)} €`);x[1]-=m;y[1]-=m;if(y[1]<=.005)c.shift()}});return r}
+function sh(k,v){const s=store("hp");s[k]=v;store("hp",s)}
+function docsHTML(){const hp=store("hp"),L=(a)=>a.map(x=>`<li>${ln(x[0],x[1])}</li>`).join("");
+return`<div class="card"><h2>🚌 Transporte</h2><ul class="l">${L([U.td,U.bd,U.bal,U.bpi,U.bia,U.bpc,U.prv,U.bmp])}</ul><div class="mu">Los enlaces de Drive solo abren si tu cuenta de Google tiene acceso a esos archivos.</div></div>
+<div class="card"><h2>🎟️ Tours y entradas</h2><ul class="l">${L([U.tod,U.bal2,U.bug,U.sil,U.fta,U.col,U.tit,U.cc,U.vs,U.mc,U.hum])}</ul></div>
+<div class="card"><h2>🏨 Alojamientos</h2>${AL.map((a,i)=>`<div style="padding:8px 0;border-bottom:1px solid var(--bd)"><b>${a[0]}</b><div class="mu">${a[1]} · ${a[2]} · ${a[3]}</div><div>${ln("Reserva (Booking)",BK(a[4]))} · ${ln("📍 Mapa","https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(a[0]+" "+a[1]+" Perú"))}</div><input type="search" placeholder="Teléfono / dirección (solo en este dispositivo)" value="${E(hp[a[0]]||"")}" oninput="sh('${a[0].replace(/'/g,"\\'")}',this.value)" style="margin:6px 0 0"></div>`).join("")}</div>
+<div class="card"><h2>🗺️ Mapa de visitas</h2>${ln("Abrir mapa en Google Maps","https://maps.app.goo.gl/wDtNnq39EhCXSpwUA")}</div>`}
+function gastosHTML(){const g=G(),n=g.p.length;let h=`<div class="card"><h2>👥 Grupo</h2><p class="mu">Nombres separados por comas. Los gastos se guardan solo en este dispositivo: lo normal es que los apunte una persona.</p><input type="search" id="pp" value="${E(g.p.join(", "))}" placeholder="Javi, Leti, Jorge…"><button class="chip on" onclick="setP()">Guardar grupo</button></div>`;
+if(!n)return h;
+h+=`<div class="card"><h2>➕ Nuevo gasto</h2><input type="search" id="gc" placeholder="Concepto (cena, taxi…)"><input type="search" id="gm" inputmode="decimal" placeholder="Importe en €"><select id="gw" style="width:100%;padding:10px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;margin-bottom:8px">${g.p.map(x=>`<option>${E(x)}</option>`).join("")}</select><button class="chip on" onclick="addG()">Añadir (se reparte entre todos)</button></div>`;
+const tot=g.i.reduce((a,x)=>a+x.m,0),b={};g.p.forEach(x=>b[x]=-tot/n);g.i.forEach(x=>{if(x.w in b)b[x.w]+=x.m});
+h+=`<div class="card"><h2>🧾 Gastos · ${tot.toFixed(2)} €</h2>${g.i.length?`<table>${g.i.map((x,k)=>`<tr><td>${E(x.c)}<div class="mu">Pagó ${E(x.w)}</div></td><td>${x.m.toFixed(2)} € <span class="go" onclick="delG(${k})">✕</span></td></tr>`).join("")}</table>`:`<div class="mu">Aún no hay gastos.</div>`}</div>`;
+if(g.i.length){const r=settle(b);h+=`<div class="card"><h2>🤝 Cuentas</h2><div class="mu">Cada uno: ${(tot/n).toFixed(2)} €</div><ul class="l">${r.length?r.map(x=>`<li>${E(x)}</li>`).join(""):"<li>Todo saldado ✅</li>"}</ul></div>`}
+return h}
+const T=[["dia","📅 Por día"],["ciudad","📍 Por ciudad"],["docs","📎 Reservas"],["gastos","💸 Gastos"],["ppto","💶 Presupuesto"],["tips","✍️ Consejos"],["maleta","🎒 Maleta"]];
 let tab="dia",cur=0,city="lima",q="";
 const $=s=>document.querySelector(s),app=$("#app");
 const E=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
@@ -73,7 +115,7 @@ return`<div class="card"><div class="mu">Día ${n} · ${f} · ${ci[0]}</div><h2>
 <span class="tag">⛰️ ${ci[1]}</span><span class="tag">🌡️ ${ci[2]}</span>${h!=="—"?`<div class="mu" style="margin-top:6px">🛏️ ${E(h)}</div>`:""}
 ${av?`<div class="warn">${E(av)}</div>`:""}
 <h3>🕒 Plan</h3><ul class="tl">${it.map(x=>{const[a,b]=x.split("|");return`<li><b>${a}</b><span>${E(b)}</span></li>`}).join("")}</ul>
-<h3>🎒 Qué llevar</h3><div>${ll.map(x=>`<span class="tag">${E(x)}</span>`).join("")}</div></div>`}
+<h3>🎒 Qué llevar</h3><div>${ll.map(x=>`<span class="tag">${E(x)}</span>`).join("")}</div>${links(n)}${notes(n)}</div>`}
 function render(){
 $("#nav").innerHTML=T.map(([k,l])=>`<button class="${k==tab?"on":""}" onclick="tab='${k}';render();scrollTo(0,0)">${l}</button>`).join("");
 let h="";
@@ -90,6 +132,8 @@ app.innerHTML=h;return}
 if(tab=="tips"){
 h=`<div class="card"><h2>Recomendaciones</h2><ul class="l">${TIPS.map(t=>`<li>${t}</li>`).join("")}</ul></div><div class="card"><h2>🌞 Altura y clima</h2><div class="wrap"><table>${Object.values(C).map(c=>`<tr><td><b>${c[0]}</b><div class="mu">${c[3]}</div></td><td>${c[1]}<br>${c[2]}</td></tr>`).join("")}</table></div></div>`;
 app.innerHTML=h;return}
+if(tab=="docs"){app.innerHTML=docsHTML();return}
+if(tab=="gastos"){app.innerHTML=gastosHTML();return}
 const s=store("pk");
 h=Object.entries(PK).map(([g,a])=>`<div class="card"><h2>${g}</h2>${a.map(x=>`<label><input type="checkbox" ${s[x]?"checked":""} onchange="ck('${x.replace(/'/g,"\\'")}',this.checked)"> ${x}</label>`).join("")}</div>`).join("");
 app.innerHTML=h}
