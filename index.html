@@ -23,7 +23,7 @@ h2{margin:0 0 4px;font-size:1.3rem}h3{margin:14px 0 6px;font-size:1rem;color:var
 .tag{display:inline-block;background:var(--ac2);color:var(--ac);border-radius:8px;padding:2px 9px;font-size:.82rem;margin:2px 4px 2px 0}
 .warn{background:var(--ac2);border-left:4px solid var(--ac);padding:8px 12px;border-radius:8px;margin:10px 0}
 input[type=search]{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;margin-bottom:8px}
-a{color:var(--ac)}textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;resize:vertical}table{width:100%;border-collapse:collapse}td{padding:7px 4px;border-bottom:1px solid var(--bd)}td:last-child{text-align:right;font-weight:600}
+a{color:var(--ac)}textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;resize:vertical}.wxg{display:grid;gap:10px}@media(min-width:600px){.wxg{grid-template-columns:1fr 1fr}}.wx{border-radius:14px;padding:12px 14px}.wxnow{background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff}.wxfc{background:var(--card);border:1px solid var(--bd);border-left:6px solid #f59e0b}.wl{font-size:.72rem;font-weight:700;letter-spacing:.06em;opacity:.9}.wxfc .wl{color:#d97706}.wp{font-size:.9rem;margin-top:2px}.wb{font-size:2rem;font-weight:700;line-height:1.2}.ws{font-size:.9rem}.wxd{display:flex;flex-wrap:wrap;gap:4px 10px;padding:6px 0;border-top:1px dashed var(--bd);margin-top:6px}.wxd:first-of-type{border-top:0}.wxr{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--bd);font-size:.92rem}table{width:100%;border-collapse:collapse}td{padding:7px 4px;border-bottom:1px solid var(--bd)}td:last-child{text-align:right;font-weight:600}
 .wrap{overflow-x:auto}ul.l{padding-left:20px;margin:4px 0}label{display:block;padding:3px 0}
 .go{color:var(--ac);cursor:pointer;text-decoration:underline}
 .nv{display:flex;justify-content:space-between;margin-top:8px}
@@ -126,6 +126,19 @@ function viajerosHTML(){const pv=store("pv"),ret=new Date(2026,9,25);
 return`<div class="card"><h2>🛂 Viajeros</h2><div class="warn">Esta web es pública, así que <b>no incluye números de pasaporte ni DNI</b>. Cada uno puede apuntar los suyos abajo: se guardan solo en su dispositivo y nadie más los ve.</div><label><input type="checkbox" ${shP?"checked":""} onchange="shP=this.checked;render()"> Mostrar datos escritos</label></div>`+
 TR.map((t,i)=>{const[d,m,y]=t[1].split("/").map(Number),ex=new Date(y,m-1,d),mes=Math.round((ex-ret)/2629800000);
 return`<div class="card"><h2>${i+1}. ${E(t[0])}</h2><div>Pasaporte válido hasta <b>${t[1]}</b> <span class="tag">${mes>=6?"✅":"⚠️"} ${mes} meses tras la vuelta</span></div><input type="${shP?"text":"password"}" autocomplete="off" placeholder="Nº de pasaporte (solo en este dispositivo)" value="${E(pv[i+"p"]||"")}" oninput="vv(${i},'p',this.value)" style="margin:8px 0 0"><input type="${shP?"text":"password"}" autocomplete="off" placeholder="DNI (solo en este dispositivo)" value="${E(pv[i+"d"]||"")}" oninput="vv(${i},'d',this.value)" style="margin:6px 0 0"></div>`}).join("")}
+const LOC={lima:[-12.046,-77.043,"Lima"],paracas:[-13.834,-76.251,"Paracas"],ica:[-14.087,-75.763,"Huacachina"],aqp:[-16.409,-71.537,"Arequipa"],colca:[-15.638,-71.601,"Chivay (Colca)"],puno:[-15.84,-70.028,"Puno"],cusco:[-13.532,-71.967,"Cusco"],vs:[-13.258,-72.264,"Ollantaytambo"],mp:[-13.155,-72.525,"Aguas Calientes"],vini:[-13.87,-71.303,"Vinicunca"],hum:[-13.368,-72.571,"Laguna Humantay"]};
+const wk=(n,c)=>n==13?"vini":n==14?"hum":c,iso=n=>"2026-10-"+String(9+n).padStart(2,"0");
+const WXC={};
+function getW(k){const L=LOC[k];return WXC[k]||(WXC[k]=fetch(`https://api.open-meteo.com/v1/forecast?latitude=${L[0]}&longitude=${L[1]}&current=temperature_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FLima&forecast_days=16`).then(r=>{if(!r.ok)throw 0;return r.json()}))}
+function WI(c){return c==0?"☀️":c<=1?"🌤️":c==2?"⛅":c==3?"☁️":c<=48?"🌫️":c<=57?"🌦️":c<=67?"🌧️":c<=77?"❄️":c<=82?"🌦️":c<=86?"🌨️":"⛈️"}
+function WD(c){return c==0?"Despejado":c<=1?"Poco nuboso":c==2?"Parcialmente nublado":c==3?"Nublado":c<=48?"Niebla":c<=57?"Llovizna":c<=67?"Lluvia":c<=77?"Nieve":c<=82?"Chubascos":c<=86?"Nevadas":"Tormenta"}
+const dl=d=>(D[+d.slice(8)-10]||[0,d])[1];
+function wxBox(k,ds){return`<h3>🌦️ Tiempo</h3><div class="wxg"><div class="wx wxnow" data-k="${k}" data-t="now"><div class="wl">🔴 AHORA · EN DIRECTO</div><div class="ws">Cargando…</div></div><div class="wx wxfc" data-k="${k}" data-t="fc" data-d="${ds.join(",")}"><div class="wl">📅 PREVISIÓN DEL DÍA</div><div class="ws">Cargando…</div></div></div><div class="mu" style="margin-top:6px">Datos: Open-Meteo. Previsión: máx / mín y probabilidad de lluvia.</div>`}
+function fillWx(el){el.dataset.done=1;const k=el.dataset.k,L=LOC[k],now=el.dataset.t=="now";getW(k).then(w=>{const c=w.current,wd=w.daily;
+if(now){el.innerHTML=`<div class="wl">🔴 AHORA · EN DIRECTO</div><div class="wp">${L[2]}</div><div class="wb">${WI(c.weather_code)} ${Math.round(c.temperature_2m)}°C</div><div class="ws">${WD(c.weather_code)} · 💨 ${Math.round(c.wind_speed_10m)} km/h</div>`;return}
+const ds=el.dataset.d.split(","),one=ds.length==1;let h=`<div class="wl">📅 PREVISIÓN${one?" · "+dl(ds[0]).toUpperCase():" POR DÍAS"}</div><div class="wp">${L[2]}</div>`;
+ds.forEach(d=>{const i=wd.time.indexOf(d),lab=one?"":`<b>${dl(d)}</b>`;if(i<0){const a=new Date(d+"T12:00:00");a.setDate(a.getDate()-15);h+=`<div class="wxd">${lab}<span class="mu">Disponible desde el ${a.getDate()} oct</span></div>`}else{const code=wd.weather_code[i];h+=`<div class="wxd">${lab}<span>${WI(code)} ${WD(code)}</span><span>🌡️ <b>${Math.round(wd.temperature_2m_max[i])}°</b> / ${Math.round(wd.temperature_2m_min[i])}° · 💧 ${wd.precipitation_probability_max[i]??"–"}%</span></div>`}});
+el.innerHTML=h}).catch(()=>{el.innerHTML='<div class="ws">No se pudo cargar el tiempo (hace falta conexión).</div>'})}
 const T=[["dia","📅 Por día"],["ciudad","📍 Por ciudad"],["docs","📎 Reservas"],["mapa","🗺️ Mapa"],["gastos","💸 Gastos"],["viajeros","🛂 Viajeros"],["ppto","💶 Presupuesto"],["tips","✍️ Consejos"],["maleta","🎒 Maleta"]];
 let tab="dia",cur=0,city="lima",q="";
 const $=s=>document.querySelector(s),app=$("#app");
@@ -136,7 +149,7 @@ return`<div class="card"><div class="mu">Día ${n} · ${f} · ${ci[0]}</div><h2>
 <span class="tag">⛰️ ${ci[1]}</span><span class="tag">🌡️ ${ci[2]}</span>${h!=="—"?`<div class="mu" style="margin-top:6px">🛏️ ${E(h)}</div>`:""}
 ${av?`<div class="warn">${E(av)}</div>`:""}
 <h3>🕒 Plan</h3><ul class="tl">${it.map(x=>{const[a,b]=x.split("|");return`<li><b>${a}</b><span>${E(b)}</span></li>`}).join("")}</ul>
-<h3>🎒 Qué llevar</h3><div>${ll.map(x=>`<span class="tag">${E(x)}</span>`).join("")}</div>${mapBox("d"+n,[cn(c),...(PL[n]||[])])}${links(n)}${notes(n)}</div>`}
+<h3>🎒 Qué llevar</h3><div>${ll.map(x=>`<span class="tag">${E(x)}</span>`).join("")}</div>${wxBox(wk(n,c),[iso(n)])}${mapBox("d"+n,[cn(c),...(PL[n]||[])])}${links(n)}${notes(n)}</div>`}
 function render(){
 $("#nav").innerHTML=T.map(([k,l])=>`<button class="${k==tab?"on":""}" onclick="tab='${k}';render();scrollTo(0,0)">${l}</button>`).join("");
 let h="";
@@ -145,7 +158,7 @@ h=`<input type="search" placeholder="Buscar (Machu Picchu, ceviche, bus…)" val
 if(tab=="ciudad"){
 h=`<div class="chips">${Object.keys(C).map(k=>`<button class="chip ${k==city?"on":""}" onclick="city='${k}';render()">${C[k][0]}</button>`).join("")}</div>`;
 const c=C[city],ds=D.filter(d=>d[2]==city||(city=="mp"&&d[0]==12)||(city=="vs"&&d[0]==11)||(city=="ica"&&d[0]==3)||(city=="aqp"&&[4,5].includes(d[0]))||(city=="cusco"&&[9,10,13,14].includes(d[0])));
-h+=`<div class="card"><h2>${c[0]}</h2><span class="tag">⛰️ ${c[1]}</span><span class="tag">🌡️ ${c[2]}</span><p>${c[3]}</p><h3>🍽️ Qué comer</h3><p>${c[4]}</p><h3>🗓️ Días aquí</h3><ul class="l">${ds.map(d=>`<li><span class="go" onclick="tab='dia';cur=${d[0]-1};q='';render()">Día ${d[0]} · ${d[1]}</span>: ${E(d[3])}</li>`).join("")}</ul><h3>🛏️ Alojamiento</h3><ul class="l">${AL.filter(a=>c[0].includes(a[1])||a[1].includes(c[0].split(" ")[0])||(city=="mp"&&a[1]=="Aguas Calientes")||(city=="vs"&&0)).map(a=>`<li>${a[0]} · ${a[2]} · ${a[3]}</li>`).join("")||"<li>—</li>"}</ul>${mapBox("c"+city,[cn(city),...new Set(ds.flatMap(d=>PL[d[0]]||[]))])}</div>`;
+h+=`<div class="card"><h2>${c[0]}</h2><span class="tag">⛰️ ${c[1]}</span><span class="tag">🌡️ ${c[2]}</span><p>${c[3]}</p><h3>🍽️ Qué comer</h3><p>${c[4]}</p><h3>🗓️ Días aquí</h3><ul class="l">${ds.map(d=>`<li><span class="go" onclick="tab='dia';cur=${d[0]-1};q='';render()">Día ${d[0]} · ${d[1]}</span>: ${E(d[3])}</li>`).join("")}</ul><h3>🛏️ Alojamiento</h3><ul class="l">${AL.filter(a=>c[0].includes(a[1])||a[1].includes(c[0].split(" ")[0])||(city=="mp"&&a[1]=="Aguas Calientes")||(city=="vs"&&0)).map(a=>`<li>${a[0]} · ${a[2]} · ${a[3]}</li>`).join("")||"<li>—</li>"}</ul>${wxBox(city,ds.map(d=>iso(d[0])))}${mapBox("c"+city,[cn(city),...new Set(ds.flatMap(d=>PL[d[0]]||[]))])}</div>`;
 app.innerHTML=h;return}
 if(tab=="ppto"){
 h=`<div class="card"><h2>Coste total</h2><table>${BU.map(b=>`<tr><td><b>${b[0]}</b><div class="mu">${b[2]}</div></td><td>${b[1]}</td></tr>`).join("")}</table></div><div class="card"><h2>🛏️ Alojamientos</h2><div class="wrap"><table>${AL.map(a=>`<tr><td>${a[0]}<div class="mu">${a[1]} · ${a[2]}</div></td><td>${a[3]}</td></tr>`).join("")}</table></div></div>`;
@@ -165,5 +178,6 @@ function render2(){const r=$("#r");
 if(q.trim()){const w=q.toLowerCase(),m=D.filter(d=>JSON.stringify(d).toLowerCase().includes(w)||C[d[2]][0].toLowerCase().includes(w));
 r.innerHTML=m.length?m.map(d=>dayHTML(d)).join(""):`<div class="card">Sin resultados.</div>`;return}
 r.innerHTML=`<div class="chips">${D.map((d,i)=>`<button class="chip ${i==cur?"on":""}" onclick="cur=${i};render2()">${d[0]}<br><small>${d[1].slice(4)}</small></button>`).join("")}</div>`+dayHTML(D[cur])+`<div class="nv"><button class="chip" ${cur?"":"disabled"} onclick="cur--;render2();scrollTo(0,0)">← Anterior</button><button class="chip" ${cur<15?"":"disabled"} onclick="cur++;render2();scrollTo(0,0)">Siguiente →</button></div>`}
+new MutationObserver(()=>document.querySelectorAll('.wx:not([data-done])').forEach(fillWx)).observe(app,{childList:true,subtree:true});
 render();
 </script></body></html>
