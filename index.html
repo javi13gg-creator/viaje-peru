@@ -23,7 +23,7 @@ h2{margin:0 0 4px;font-size:1.3rem}h3{margin:14px 0 6px;font-size:1rem;color:var
 .tag{display:inline-block;background:var(--ac2);color:var(--ac);border-radius:8px;padding:2px 9px;font-size:.82rem;margin:2px 4px 2px 0}
 .warn{background:var(--ac2);border-left:4px solid var(--ac);padding:8px 12px;border-radius:8px;margin:10px 0}
 input[type=search]{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;margin-bottom:8px}
-a{color:var(--ac)}textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;resize:vertical}.cds{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}.cd{flex:1;min-width:150px;max-width:272px;background:rgba(255,255,255,.95);color:#1f2937;border-radius:16px;padding:8px 12px;box-shadow:0 4px 14px rgba(0,0,0,.18)}.cl{font-size:.7rem;font-weight:700;color:#b91c1c;letter-spacing:.03em}.cs{font-size:.78rem;color:#6b7280}.ct{font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}.wxg{display:grid;gap:10px}@media(min-width:600px){.wxg{grid-template-columns:1fr 1fr}}.wx{border-radius:14px;padding:12px 14px}.wxnow{background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff}.wxfc{background:var(--card);border:1px solid var(--bd);border-left:6px solid #f59e0b}.wl{font-size:.72rem;font-weight:700;letter-spacing:.06em;opacity:.9}.wxfc .wl{color:#d97706}.wp{font-size:.9rem;margin-top:2px}.wb{font-size:2rem;font-weight:700;line-height:1.2}.ws{font-size:.9rem}.wxd{display:flex;flex-wrap:wrap;gap:4px 10px;padding:6px 0;border-top:1px dashed var(--bd);margin-top:6px}.wxd:first-of-type{border-top:0}.wxr{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--bd);font-size:.92rem}table{width:100%;border-collapse:collapse}td{padding:7px 4px;border-bottom:1px solid var(--bd)}td:last-child{text-align:right;font-weight:600}
+a{color:var(--ac)}textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;resize:vertical}.cds{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}.cd{flex:1;min-width:150px;max-width:272px;background:rgba(255,255,255,.95);color:#1f2937;border-radius:16px;padding:8px 12px;box-shadow:0 4px 14px rgba(0,0,0,.18)}.cl{font-size:.7rem;font-weight:700;color:#b91c1c;letter-spacing:.03em}.cs{font-size:.78rem;color:#6b7280}.ct{font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}.wxg{display:grid;gap:10px}@media(min-width:600px){.wxg{grid-template-columns:1fr 1fr}}.wx{border-radius:14px;padding:12px 14px}.wxnow{background:linear-gradient(135deg,#0ea5e9,#2563eb);color:#fff}.wxfc{background:var(--card);border:1px solid var(--bd);border-left:6px solid #f59e0b}.wl{font-size:.72rem;font-weight:700;letter-spacing:.06em;opacity:.9}.wxfc .wl{color:#d97706}.wp{font-size:.9rem;margin-top:2px}.wb{font-size:2rem;font-weight:700;line-height:1.2}.ws{font-size:.9rem}.wxd{display:flex;flex-wrap:wrap;gap:4px 10px;padding:6px 0;border-top:1px dashed var(--bd);margin-top:6px}.wxd:first-of-type{border-top:0}.wxr{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--bd);font-size:.92rem}.sel{width:100%;padding:10px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;margin-bottom:8px}table{width:100%;border-collapse:collapse}td{padding:7px 4px;border-bottom:1px solid var(--bd)}td:last-child{text-align:right;font-weight:600}
 .wrap{overflow-x:auto}ul.l{padding-left:20px;margin:4px 0}label{display:block;padding:3px 0}
 .go{color:var(--ac);cursor:pointer;text-decoration:underline}
 .nv{display:flex;justify-content:space-between;margin-top:8px}
@@ -142,13 +142,102 @@ if(now){el.innerHTML=`<div class="wl">🔴 AHORA · EN DIRECTO</div><div class="
 const ds=el.dataset.d.split(","),one=ds.length==1;let h=`<div class="wl">📅 PREVISIÓN${one?" · "+dl(ds[0]).toUpperCase():" POR DÍAS"}</div><div class="wp">${L[2]}</div>`;
 ds.forEach(d=>{const i=wd.time.indexOf(d),lab=one?"":`<b>${dl(d)}</b>`;if(i<0){const a=new Date(d+"T12:00:00");a.setDate(a.getDate()-15);h+=`<div class="wxd">${lab}<span class="mu">Disponible desde el ${a.getDate()} oct</span></div>`}else{const code=wd.weather_code[i];h+=`<div class="wxd">${lab}<span>${WI(code)} ${WD(code)}</span><span>🌡️ <b>${Math.round(wd.temperature_2m_max[i])}°</b> / ${Math.round(wd.temperature_2m_min[i])}° · 💧 ${wd.precipitation_probability_max[i]??"–"}%</span></div>`}});
 el.innerHTML=h}).catch(()=>{el.innerHTML='<div class="ws">No se pudo cargar el tiempo (hace falta conexión).</div>'})}
-const T=[["dia","📅 Por día"],["ciudad","📍 Por ciudad"],["docs","📎 Reservas"],["mapa","🗺️ Mapa"],["viajeros","🛂 Viajeros"],["ppto","💶 Presupuesto"],["tips","✍️ Consejos"],["maleta","🎒 Maleta"]];
+const GU={
+lima:{i:"Bienvenidos a la Ciudad de los Reyes: una capital fundada por Pizarro en 1535, en pleno desierto y frente al Pacífico.",s:[
+["🏛️ Fundación y poder","Francisco Pizarro la fundó el 18 de enero de 1535 como Ciudad de los Reyes. Durante casi tres siglos fue capital del Virreinato del Perú, la sede del poder español en Sudamérica. Su centro histórico es Patrimonio de la Humanidad de la UNESCO."],
+["⛪ Plaza de Armas y Catedral","La plaza es el punto cero de la ciudad. La Catedral guarda un mausoleo que la tradición atribuye a Pizarro; sus restos se identificaron en 1977. Fijaos en los balcones de madera tallada, típicos de la Lima virreinal."],
+["🏠 Casa de Aliaga","Se levanta sobre un solar que Pizarro entregó en 1535 a Jerónimo de Aliaga, uno de sus capitanes. La familia sigue viviendo en ella: es una de las casas habitadas más antiguas de América."],
+["🌊 Miraflores y Barranco","Acantilados sobre el Pacífico, parques y un barrio bohemio. Cuenta la tradición que si cruzáis el Puente de los Suspiros sin respirar, se cumple un deseo."],
+["🍽️ Capital gastronómica","El ceviche es Patrimonio Cultural Inmaterial de la Humanidad (UNESCO, 2023) y tiene su día el 28 de junio. El pisco sour se disputa con Chile; la versión peruana se atribuye al bartender Victor Morris, que lo popularizó en Lima en los años 20."]],
+f:"Lima es una de las mayores capitales del mundo construidas en pleno desierto y casi nunca llueve: el cielo gris de la garúa es lo normal."},
+paracas:{i:"Desierto, mar y una cultura que tejía obras maestras hace más de dos mil años.",s:[
+["🌬️ El nombre","Paracas viene del quechua y se suele traducir como lluvia de arena: los vientos que sentiréis en la reserva explican el nombre."],
+["🏜️ Reserva Nacional","Creada en 1975, protege desierto y mar. Playa Roja debe su color a la arena y las rocas ricas en hierro. La Catedral, un gran arco de roca sobre el mar, se derrumbó con el terremoto de 2007 y hoy solo queda el mirador."],
+["🧵 La cultura Paracas","Vivió aquí entre unos 800 a. C. y el cambio de era. Es famosa por sus mantos funerarios bordados, de una finura asombrosa, y por los cráneos alargados que deformaban de forma intencionada."],
+["🐧 Islas Ballestas","Las llaman las Galápagos de los pobres: leones marinos, pingüinos de Humboldt, piqueros y cormoranes. El guano, los excrementos de las aves, fue en el siglo XIX un fertilizante tan valioso que sostuvo buena parte de la economía peruana."],
+["📐 El Candelabro","Geoglifo de unos 180 metros grabado en la ladera frente al mar. No se sabe seguro quién lo hizo ni para qué; se calcula que tiene más de 2.000 años y se ve bien desde el barco."]],
+f:"En 1820 el general San Martín desembarcó en la bahía de Paracas al frente de la expedición libertadora que impulsó la independencia del Perú."},
+ica:{i:"Un oasis de postal rodeado de dunas enormes, en el corazón de la región del pisco.",s:[
+["🧜 La leyenda","Cuentan que una joven que se bañaba en la laguna vio a un cazador y huyó; su espejo cayó y formó el lago, y ella se convirtió en sirena. Huacachina se suele traducir como mujer que llora."],
+["🏜️ Las dunas","Algunas superan los 100 metros. El oasis se alimenta de agua subterránea y su nivel llegó a bajar mucho, así que hoy se mantiene con ayuda artificial. Es una aldea pequeña de hostales y restaurantes."],
+["🍇 Tierra de pisco","Ica es una de las grandes zonas de uva y pisco de Perú. El pisco es un destilado de uva con denominación de origen, que se bebe solo o en pisco sour."],
+["🏂 Buggies y sandboard","Los buggies son vehículos con motor potente y jaula, y los conductores conocen las dunas al detalle. En el sandboard se baja tumbado boca abajo, que es más rápido, o de pie, que es más difícil."]],
+f:"Cerca de Ica está el desierto de Nazca, famoso por unos geoglifos gigantes que solo se aprecian bien desde el aire."},
+aqp:{i:"La Ciudad Blanca, rodeada de volcanes y construida con piedra volcánica clara.",s:[
+["🌋 Ciudad de sillar","Casi todo el centro se levantó con sillar, una roca volcánica blanca de la zona: ligera, fácil de tallar y resistente a los temblores. El centro histórico es Patrimonio de la Humanidad desde el año 2000."],
+["⛰️ Los tres guardianes","La vigilan el Misti (5.822 m), el Chachani (6.057 m) y el Pichu Pichu. El Misti está considerado un volcán activo, aunque lleva mucho tiempo tranquilo."],
+["⛪ Santa Catalina","Monasterio fundado en 1579: una ciudad dentro de la ciudad, con calles y plazas de colores. Las monjas eran de familias ricas y vivían con criadas; estuvo cerrado a los visitantes hasta 1970."],
+["❄️ Juanita","En 1995 se halló en el volcán Ampato el cuerpo de una niña inca de unos 12 a 14 años, sacrificada hace más de 500 años y conservada por el hielo. Se muestra en el Museo Santuarios Andinos."],
+["🪨 Ruta del Sillar","En la cantera de Añashuayco veréis cómo los canteros sacan los bloques a mano. En Culebrillas hay petroglifos y apachetas, montoncitos de piedras que son una ofrenda de agradecimiento a la naturaleza."],
+["🌶️ Picanterías","Restaurantes tradicionales con siglos de historia donde se come con picante: rocoto relleno, adobo, chupe de camarones. El queso helado es un helado cremoso de leche y canela, y no lleva queso."]],
+f:"Arequipa es la ciudad natal de Mario Vargas Llosa, Nobel de Literatura 2010. Se fundó el 15 de agosto de 1540 y los arequipeños presumen tanto de ella que bromean con su «república independiente»."},
+colca:{i:"Uno de los cañones más profundos del mundo, terrazas antiguas y el vuelo del cóndor.",s:[
+["🦅 El cóndor andino","Puede superar los 3 metros de envergadura y es una de las mayores aves voladoras del planeta. Usa las corrientes de aire caliente de la mañana, por eso la visita a la Cruz del Cóndor es tan temprano."],
+["🏔️ Patapampa, 4.830 m","El punto más alto del camino. Allí veréis apachetas, montones de piedras que los viajeros dejan como ofrenda a los Apus, los espíritus de las montañas. Es habitual ver vicuñas, de lana finísima, en la Reserva de Salinas y Aguada Blanca."],
+["🌾 Terrazas ancestrales","Los pueblos collaguas y cabanas construyeron aquí andenes de cultivo mucho antes de los incas, y muchos se siguen usando hoy. Las mujeres del valle lucen sombreros y trajes bordados que cambian según el pueblo."],
+["💃 Wititi","La danza del Wititi del valle del Colca es Patrimonio Cultural Inmaterial de la Humanidad (UNESCO, 2015). Es una danza de cortejo y la veréis en la cena con espectáculo de Chivay."],
+["♨️ Aguas termales","Los baños de La Calera, en Chivay, tienen agua caliente que sale de manantiales volcánicos. Son perfectos para relajar tras la altura."],
+["⛪ Maca y Yanque","Pueblos con iglesias coloniales de piedra y una vida tradicional muy viva. Es buen sitio para ver cómo se mezclan las tradiciones andinas y las españolas."]],
+f:"El cañón es más profundo que el Gran Cañón del Colorado, con más de 3.000 metros en sus partes más hondas."},
+puno:{i:"El lago navegable más alto del mundo, a casi 3.800 metros, compartido con Bolivia.",s:[
+["🌊 El Titicaca","Está a unos 3.812 m, tiene más de 8.000 km² y llega a casi 280 metros de profundidad. Es tan grande que desde la orilla parece el mar."],
+["☀️ Mito fundacional","Según la leyenda inca, Manco Cápac y Mama Ocllo salieron del lago, enviados por el dios Sol, para ir a fundar Cusco."],
+["🌿 Los Uros","Las islas flotantes se construyen con totora, una caña que crece en el lago, y se renuevan constantemente con nuevas capas porque la base se pudre. Según la tradición, los uros se refugiaron en el agua para defenderse de otros pueblos."],
+["🧶 Taquile","Isla de habla quechua donde los hombres tejen, algo poco común. Su arte textil es Patrimonio Cultural Inmaterial de la Humanidad (UNESCO, 2005). Los gorros indican el estado civil de quien los lleva."],
+["🎭 Capital folclórica","Puno es famosa por sus danzas y por la fiesta de la Virgen de la Candelaria, en febrero, también Patrimonio de la UNESCO. Su catedral barroca preside la Plaza de Armas."]],
+f:"A esta altura el agua del lago está muy fría, con unos 10 ó 14 grados, aunque el sol pega fuerte y quema."},
+cusco:{i:"El ombligo del mundo: la antigua capital del imperio inca, a 3.400 metros.",s:[
+["🏙️ Qosqo","Cusco viene del quechua Qosqo, que se traduce como ombligo. Fue la capital del Tahuantinsuyo, el imperio inca, que se extendía por gran parte de los Andes. Se dice que su trazado imitaba la forma de un puma. Es Patrimonio de la Humanidad desde 1983."],
+["🧱 La piedra de los 12 ángulos","Los incas encajaban bloques sin argamasa, con una precisión tan buena que no cabe una hoja entre ellos. Sus puertas y muros trapezoidales aguantan bien los terremotos. La piedra de los 12 ángulos está en la calle Hatun Rumiyoc."],
+["🌞 Coricancha","Fue el Templo del Sol, con muros cubiertos de láminas de oro. Los españoles lo desmontaron y levantaron encima el convento de Santo Domingo; el terremoto de 1950 dejó a la vista los muros incas."],
+["⛪ La Catedral","Se construyó entre 1559 y 1654 sobre un palacio inca. Guarda obras de la escuela cusqueña, y en su Última Cena aparece un cuy, que es el plato típico, en el centro de la mesa."],
+["🏯 Saqsaywaman","Fortaleza de muros en zigzag con bloques de más de cien toneladas. Allí se celebra el Inti Raymi cada 24 de junio, y en 1536 fue escenario del asedio de Manco Inca a los españoles."],
+["🔭 Qenqo, Puka Pukara y Tambomachay","Qenqo es un laberinto de roca con altares rituales. Puka Pukara, la fortaleza roja, era un puesto de control y descanso. Tambomachay es un santuario del agua cuyas fuentes todavía corren."],
+["🌈 Vinicunca","La Montaña de Colores supera los 5.000 metros. Sus colores vienen de minerales como el hierro y el azufre. Se hizo conocida hace pocos años, cuando el hielo retrocedió."],
+["💎 Laguna Humantay","Laguna glaciar a 4.200 metros a los pies del nevado Salkantay, de 6.271 m. Su color turquesa se debe a los minerales que arrastra el agua del glaciar."]],
+f:"El Cristo Blanco que vigila la ciudad fue un regalo de refugiados palestinos que llegaron a Cusco, y se inauguró a mediados de los años 40."},
+vs:{i:"Las tierras más fértiles del imperio inca, a lo largo del río Urubamba.",s:[
+["🌽 Un valle sagrado","Los incas lo escogieron por su clima templado, más bajo que Cusco, y por sus tierras fértiles, ideales para el maíz. Era el granero del imperio."],
+["🏔️ Pisac","Ciudadela de terrazas agrícolas sobre la montaña, con el Intihuatana, un reloj solar ritual. En los acantilados de enfrente hay cientos de tumbas excavadas en la roca. El mercado es el mejor sitio para textiles y regalos."],
+["🧂 Moray y las salinas de Maras","Si el tour los incluye: Moray son terrazas circulares que funcionaron como laboratorio agrícola, y en Maras se explota sal desde tiempos incas en miles de pozas."],
+["🏰 Ollantaytambo","Es una de las pocas ciudades incas en las que todavía se vive. Su fortaleza fue escenario de una victoria de Manco Inca sobre los españoles en 1536. Las grandes piedras venían de una cantera en la otra orilla del río."],
+["🚂 El tren","Sigue el río Urubamba entre montañas cada vez más verdes. Vais a bajar de altura y a pasar de paisaje andino a vegetación de selva alta."]],
+f:"En Ollantaytambo las calles conservan el trazado inca original, con canales de agua que siguen funcionando."},
+mp:{i:"La ciudad perdida entre las nubes, a 2.430 metros.",s:[
+["👑 Una residencia real","Se levantó hacia 1450 por orden del inca Pachacútec como finca real y centro ceremonial. Se abandonó un siglo después, con la llegada de los españoles, que nunca la encontraron."],
+["📅 24 de julio de 1911","El explorador Hiram Bingham la dio a conocer al mundo, guiado por un campesino local, Melchor Arteaga. Allí ya vivían algunas familias que cultivaban las terrazas. Es Patrimonio de la Humanidad desde 1983 y una de las nuevas siete maravillas del mundo."],
+["🪨 Lo que veréis","El Templo del Sol, el Intihuatana, que significa algo así como donde se ata el sol, el Templo de las Tres Ventanas y la zona agrícola. Su arquitectura sigue la forma de la montaña."],
+["⛰️ Machu y Wayna Picchu","Machu Picchu significa montaña vieja y Wayna Picchu, montaña joven. Wayna Picchu llega a 2.720 m y se sube por escalones de piedra empinados, con permiso limitado cada día."],
+["🦙 Llamas","Pastan libres entre las terrazas y mantienen la hierba corta. Mejor no tocarlas ni acercarse mucho."],
+["🚌 Aguas Calientes","Su nombre oficial es Machupicchu Pueblo, y se llama así por sus aguas termales. No llega ninguna carretera desde Cusco: solo se llega en tren o a pie. El bus de subida recorre una carretera de zigzags."]],
+f:"No hay ruedas ni animales de carga: los incas levantaron la ciudad moviendo la piedra a mano y con rampas."}};
+const GL={mp:"Machu Picchu",ica:"Huacachina",puno:"Puno / Titicaca",colca:"Colca"},lb=k=>GL[k]||C[k][0];
+const dks=(n,c)=>n==3?["paracas","ica"]:n==7?["colca","puno"]:[c];
+function glinks(c,n){return`<div style="margin:8px 0">${dks(n,c).map(k=>`<span class="tag go" onclick="goG('${k}')">📖 Guía: ${lb(k)}</span>`).join("")}</div>`}
+let gk="lima";
+function goG(k){tab="guia";gk=k;render();scrollTo(0,0)}
+function guiaHTML(){const g=GU[gk];
+return`<div class="chips">${Object.keys(GU).map(k=>`<button class="chip ${k==gk?"on":""}" onclick="gk='${k}';render()">${lb(k)}</button>`).join("")}</div><div class="card"><h2>📖 ${C[gk][0]}</h2><p>${g.i}</p>${g.s.map(x=>`<h3>${x[0]}</h3><p style="margin:0">${x[1]}</p>`).join("")}<div class="warn">🤔 <b>¿Sabías que…?</b> ${g.f}</div><h3>🗓️ Días aquí</h3>${D.filter(d=>dks(d[0],d[2]).includes(gk)).map(d=>`<span class="tag go" onclick="tab='dia';cur=${d[0]-1};q='';render();scrollTo(0,0)">Día ${d[0]} · ${d[1]}</span>`).join("")}</div>`}
+const SHEET="";
+const FS=[["lima","Cenar","Isolina","Cena especial. Reservado el sáb 24 oct a las 21:30"],["lima","Comer","La Mar","Cevichería muy conocida (más turística)"],["lima","Cenar","Panchita","Más turística / conocida"],["lima","Cenar","Maido","Más turística / conocida"],["lima","Comer","Mercado","Más casual y cómodo"],["lima","Comer","El Bodegón","Más casual y cómodo"],["lima","Comer","La Lucha Sangucheria","Sándwich de chicharrón"],["aqp","Cenar","Chicha","Cena reservada el mar 13 oct a las 21:00"],["cusco","Compras","Barrio de San Blas","Souvenirs y artesanía"],["cusco","Compras","Mercado San Pedro","Souvenirs y mercado local"],["vs","Compras","Pisac","Mercado de textiles, regalos y artesanía"],["lima","Compras","Indian Market (Miraflores)","Artesanía y recuerdos"]];
+let cf="todo";
+const FV=()=>store("fav").l||[];
+function addF(){const n=$("#fn").value.trim();if(!n)return;const l=FV();l.push({t:$("#fk").value,c:$("#fc").value,n,x:$("#ft").value.trim()});store("fav",{l});render()}
+function delF(k){const l=FV();l.splice(k,1);store("fav",{l});render()}
+function copyF(){const t=$("#fx");t.select();try{navigator.clipboard.writeText(t.value)}catch(e){try{document.execCommand("copy")}catch(_){}}}
+function comerHTML(){const ok=x=>cf=="todo"||(cf=="comer"&&x[1]!="Compras")||(cf=="compras"&&x[1]=="Compras"),it=FS.filter(ok),ks=[...new Set(it.map(x=>x[0]))],l=FV();
+let h=`<div class="chips">${[["todo","Todo"],["comer","🍽️ Comer y cenar"],["compras","🛍️ Compras"]].map(x=>`<button class="chip ${cf==x[0]?"on":""}" onclick="cf='${x[0]}';render()">${x[1]}</button>`).join("")}</div>`;
+h+=ks.map(k=>`<div class="card"><h2>${lb(k)}</h2>${it.filter(x=>x[0]==k).map(x=>`<div style="padding:6px 0;border-bottom:1px dashed var(--bd)"><span class="tag">${x[1]}</span><b>${E(x[2])}</b><div class="mu">${E(x[3])}</div></div>`).join("")}</div>`).join("");
+h+=`<div class="card"><h2>➕ Mis apuntes</h2><p class="mu">Se guardan solo en este dispositivo. Para sumarlos a la lista de todos, pulsa Copiar y envíaselos a Javi.</p>${SHEET?`<p><a class="chip on" style="display:inline-block;text-decoration:none;color:#fff" href="${SHEET}" target="_blank" rel="noopener">📝 Abrir la lista compartida</a></p>`:""}<select id="fk" class="sel"><option>Comer</option><option>Cenar</option><option>Compras</option><option>Otro</option></select><select id="fc" class="sel">${Object.keys(C).map(k=>`<option value="${k}">${lb(k)}</option>`).join("")}</select><input type="search" id="fn" placeholder="Nombre del sitio"><input type="search" id="ft" placeholder="Nota (qué pedir, precio, dirección…)"><button class="chip on" onclick="addF()">Añadir</button></div>`;
+if(l.length){const tx=l.map(x=>`${x.t} · ${lb(x.c)} · ${x.n}${x.x?" · "+x.x:""}`).join("\n");h+=`<div class="card"><h2>📌 Lo que he apuntado</h2>${l.map((x,k)=>`<div style="padding:6px 0;border-bottom:1px dashed var(--bd)"><span class="tag">${x.t}</span><b>${E(x.n)}</b> <span class="mu">· ${lb(x.c)}</span> <span class="go" onclick="delF(${k})">✕</span>${x.x?`<div class="mu">${E(x.x)}</div>`:""}</div>`).join("")}<textarea id="fx" rows="${Math.min(l.length+1,6)}" readonly style="margin-top:10px">${E(tx)}</textarea><button class="chip on" style="margin-top:8px" onclick="copyF()">📋 Copiar para enviar</button></div>`}
+return h}
+const T=[["dia","📅 Por día"],["ciudad","📍 Por ciudad"],["guia","📖 Guía"],["comer","🍽️ Comer y compras"],["docs","📎 Reservas"],["mapa","🗺️ Mapa"],["viajeros","🛂 Viajeros"],["ppto","💶 Presupuesto"],["tips","✍️ Consejos"],["maleta","🎒 Maleta"]];
 let tab="dia",cur=0,city="lima",q="";
 const $=s=>document.querySelector(s),app=$("#app");
 const E=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"{}");localStorage.setItem(k,JSON.stringify(v))}catch(e){return {}}}
 function dayHTML(d,full){const[n,f,c,t,h,it,ll,av]=d,ci=C[c];
-return`<div class="card"><div class="mu">Día ${n} · ${f} · ${ci[0]}</div><h2>${E(t)}</h2>
+return`<div class="card"><div class="mu">Día ${n} · ${f} · ${ci[0]}</div><h2>${E(t)}</h2>${glinks(c,n)}
 <span class="tag">⛰️ ${ci[1]}</span><span class="tag">🌡️ ${ci[2]}</span>${h!=="—"?`<div class="mu" style="margin-top:6px">🛏️ ${E(h)}</div>`:""}
 ${av?`<div class="warn">${E(av)}</div>`:""}
 <h3>🕒 Plan</h3><ul class="tl">${it.map(x=>{const[a,b]=x.split("|");return`<li><b>${a}</b><span>${E(b)}</span></li>`}).join("")}</ul>
@@ -161,7 +250,7 @@ h=`<input type="search" placeholder="Buscar (Machu Picchu, ceviche, bus…)" val
 if(tab=="ciudad"){
 h=`<div class="chips">${Object.keys(C).map(k=>`<button class="chip ${k==city?"on":""}" onclick="city='${k}';render()">${C[k][0]}</button>`).join("")}</div>`;
 const c=C[city],ds=D.filter(d=>d[2]==city||(city=="mp"&&d[0]==12)||(city=="vs"&&d[0]==11)||(city=="ica"&&d[0]==3)||(city=="aqp"&&[4,5].includes(d[0]))||(city=="cusco"&&[9,10,13,14].includes(d[0])));
-h+=`<div class="card"><h2>${c[0]}</h2><span class="tag">⛰️ ${c[1]}</span><span class="tag">🌡️ ${c[2]}</span><p>${c[3]}</p><h3>🍽️ Qué comer</h3><p>${c[4]}</p><h3>🗓️ Días aquí</h3><ul class="l">${ds.map(d=>`<li><span class="go" onclick="tab='dia';cur=${d[0]-1};q='';render()">Día ${d[0]} · ${d[1]}</span>: ${E(d[3])}</li>`).join("")}</ul><h3>🛏️ Alojamiento</h3><ul class="l">${AL.filter(a=>c[0].includes(a[1])||a[1].includes(c[0].split(" ")[0])||(city=="mp"&&a[1]=="Aguas Calientes")||(city=="vs"&&0)).map(a=>`<li>${a[0]} · ${a[2]} · ${a[3]}</li>`).join("")||"<li>—</li>"}</ul>${wxBox(city,ds.map(d=>iso(d[0])))}${mapBox("c"+city,[cn(city),...new Set(ds.flatMap(d=>PL[d[0]]||[]))])}</div>`;
+h+=`<div class="card"><h2>${c[0]}</h2><span class="tag">⛰️ ${c[1]}</span><span class="tag">🌡️ ${c[2]}</span><p>${c[3]}</p>${glinks(city,0)}<h3>🍽️ Qué comer</h3><p>${c[4]}</p><h3>🗓️ Días aquí</h3><ul class="l">${ds.map(d=>`<li><span class="go" onclick="tab='dia';cur=${d[0]-1};q='';render()">Día ${d[0]} · ${d[1]}</span>: ${E(d[3])}</li>`).join("")}</ul><h3>🛏️ Alojamiento</h3><ul class="l">${AL.filter(a=>c[0].includes(a[1])||a[1].includes(c[0].split(" ")[0])||(city=="mp"&&a[1]=="Aguas Calientes")||(city=="vs"&&0)).map(a=>`<li>${a[0]} · ${a[2]} · ${a[3]}</li>`).join("")||"<li>—</li>"}</ul>${wxBox(city,ds.map(d=>iso(d[0])))}${mapBox("c"+city,[cn(city),...new Set(ds.flatMap(d=>PL[d[0]]||[]))])}</div>`;
 app.innerHTML=h;return}
 if(tab=="ppto"){
 h=(SETTLE?`<div class="card"><a class="chip on" style="display:inline-block;text-decoration:none;color:#fff;font-weight:600" href="${SETTLE}" target="_blank" rel="noopener">💸 Abrir las cuentas del viaje en Settle</a></div>`:"")+`<div class="card"><h2>Coste total</h2><table>${BU.map(b=>`<tr><td><b>${b[0]}</b><div class="mu">${b[2]}</div></td><td>${b[1]}</td></tr>`).join("")}</table></div><div class="card"><h2>🛏️ Alojamientos</h2><div class="wrap"><table>${AL.map(a=>`<tr><td>${a[0]}<div class="mu">${a[1]} · ${a[2]}</div></td><td>${a[3]}</td></tr>`).join("")}</table></div></div>`;
@@ -171,6 +260,8 @@ h=`<div class="card"><h2>Recomendaciones</h2><ul class="l">${TIPS.map(t=>`<li>${
 app.innerHTML=h;return}
 if(tab=="mapa"){app.innerHTML=mapaHTML();return}
 if(tab=="viajeros"){app.innerHTML=viajerosHTML();return}
+if(tab=="guia"){app.innerHTML=guiaHTML();return}
+if(tab=="comer"){app.innerHTML=comerHTML();return}
 if(tab=="docs"){app.innerHTML=docsHTML();return}
 const s=store("pk");
 h=Object.entries(PK).map(([g,a])=>`<div class="card"><h2>${g}</h2>${a.map(x=>`<label><input type="checkbox" ${s[x]?"checked":""} onchange="ck('${x.replace(/'/g,"\\'")}',this.checked)"> ${x}</label>`).join("")}</div>`).join("");
